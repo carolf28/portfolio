@@ -1,0 +1,380 @@
+/* ---------- Font ----------
+   Untitled Sans (variable font, so one file covers every weight) */
+@font-face {
+  font-family: 'Untitled Sans';
+  src: url('fonts/TestUntitledSansVF-Roman.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Widths include padding, so a 280px box is really 280px wide */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --brand-width: 280px;
+  --gap-ui: 6px; /* space between buttons */
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  padding: 1.25rem;
+  box-sizing: border-box;
+  background: #ffffff;
+  font-family: 'Untitled Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* ---------- Header: logo top-left, nav top-right ---------- */
+.header {
+  position: fixed;
+  top: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+/* ---------- Brand box (top-left) ---------- */
+.brand {
+  flex: 0 1 var(--brand-width);
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background-color: #ebe4fb;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  color: #5b3a91;
+  font-size: 15px;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.brand-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-name {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* The + is drawn with two lines so it sits exactly centred on the name */
+.brand-toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-right: -3px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.25s ease;
+}
+
+.brand-toggle::before,
+.brand-toggle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 1.25px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+}
+
+.brand-toggle::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.brand-toggle[aria-expanded="true"] {
+  transform: rotate(45deg); /* + turns into × */
+}
+
+.brand-tagline,
+.brand-more p {
+  margin: 0;
+  color: rgba(91, 58, 145, 0.6);
+}
+
+/* Smooth open/close: the row grows from 0 to its natural height */
+.brand-more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.brand-more.open {
+  grid-template-rows: 1fr;
+}
+
+.brand-more-inner {
+  overflow: hidden;
+}
+
+.brand-more-inner > :first-child {
+  margin-top: 0.75rem;
+}
+
+.brand-more-inner > * + * {
+  margin-top: 0.6em;
+}
+
+.menu {
+  margin-left: auto;
+}
+
+.menu .menu-toggle {
+  display: none; /* only shown on mobile */
+}
+
+.nav {
+  display: flex;
+  gap: var(--gap-ui);
+}
+
+:root {
+  --radius-ui: 999px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 10.5px;
+  border-radius: var(--radius-ui);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: #5b3a91;
+  background-color: #ebe4fb;
+  text-decoration: none;
+  touch-action: manipulation;
+  -webkit-font-smoothing: antialiased;
+  transition: border-radius 0.2s, background-color 0.2s, opacity 0.2s, filter 0.2s;
+}
+
+.tag:hover {
+  filter: brightness(0.94);
+}
+
+/* Lets the Info <button> look exactly like the link buttons */
+button.tag {
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- Mobile header: brand box + Menu, nav cascades underneath ---------- */
+@media (max-width: 600px) {
+  .header {
+    flex-wrap: nowrap;
+  }
+
+  /* Same height as the Menu pill so the top row lines up exactly */
+  .brand {
+    flex: 1 1 auto;
+    padding: 4px 10.5px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .brand-toggle {
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: -2px;
+  }
+
+  .brand-toggle::before,
+  .brand-toggle::after {
+    width: 10px;
+  }
+
+  /* Only the name shows until the box is opened */
+  .brand-tagline {
+    display: none;
+  }
+
+  .brand.is-open .brand-tagline {
+    display: block;
+    margin-top: 0.75rem;
+  }
+
+  .brand.is-open .brand-more-inner > :first-child {
+    margin-top: 0.6em;
+  }
+
+  .menu {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  /* Same pill size and style as desktop, just stacked */
+  .menu .menu-toggle {
+    display: inline-block;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  /* Hidden until Menu is tapped, then each button drops in one after another */
+  .nav .tag {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    transition-delay: calc(var(--i) * 60ms);
+  }
+
+  .menu.open .nav .tag {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+}
+
+/* ---------- Info overlay (frosted glass) ---------- */
+.header {
+  z-index: 20;
+}
+
+.info-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow-y: auto;
+  padding: calc(1.25rem + 40px) 1.25rem 1.25rem;
+  background-color: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  font-size: 15px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: #000;
+  -webkit-font-smoothing: antialiased;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.info-panel.open {
+  opacity: 1;
+}
+
+.info-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2.5rem;
+  margin-top: 18vh;
+}
+
+/* Left column */
+.info-main {
+  max-width: 42%;
+  font-size: 1rem;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+}
+
+.info-block {
+  margin-bottom: 3.5rem;
+}
+
+/* Text spacing: 0.6em between stacked lines/paragraphs (like Tailwind space-y-[.6em]) */
+.info-block p,
+.info-block h2,
+.info-block dl,
+.info-block dt,
+.info-block dd,
+.info-figure figcaption p {
+  margin: 0;
+}
+
+.info-block > * + *,
+.info-block dl > * + *,
+.info-figure figcaption > * + * {
+  margin-top: 0.6em;
+}
+
+.info-block h2 {
+  font-size: inherit;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+}
+
+.info-panel a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.info-panel a:hover {
+  color: #5b3a91;
+}
+
+/* Right column */
+.info-figure {
+  width: 24%;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.info-figure img,
+.info-image-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.info-image-placeholder {
+  background-color: #ebe4fb;
+}
+
+.info-figure figcaption {
+  max-width: 22em;
+  margin-top: 1.25rem;
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+/* Stack the columns on small screens */
+@media (max-width: 760px) {
+  .info-layout {
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+
+  .info-main,
+  .info-figure {
+    max-width: none;
+    width: 100%;
+  }
+}

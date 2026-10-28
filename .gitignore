@@ -1,0 +1,6 @@
+# macOS
+.DS_Store
+
+# Trial font files (license doesn't allow sharing) — keep them local only
+fonts/*
+!fonts/.gitkeep

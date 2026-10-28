@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>webcarolf</title>
+  <link rel="canonical" href="https://www.webcarolf.com/">
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <!-- Brand box: name + tagline, the + button expands more info -->
+    <div class="brand">
+      <div class="brand-top">
+        <a href="/" class="brand-name">webcarolf</a>
+        <button type="button" class="brand-toggle" aria-expanded="false" aria-controls="brand-more" aria-label="Show more"></button>
+      </div>
+      <p class="brand-tagline">Web design and fashion.</p>
+
+      <div class="brand-more" id="brand-more">
+        <div class="brand-more-inner">
+          <p>Write a few lines about yourself here.</p>
+          <p>Add anything else you want people to see when the box opens.</p>
+        </div>
+      </div>
+    </div>
+    <!-- On desktop the nav buttons show directly; on mobile they cascade out of "Menu" -->
+    <div class="menu">
+      <button type="button" class="tag menu-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
+      <nav class="nav" id="nav">
+        <a href="/works/" class="tag" style="--i: 0">Works</a>
+        <button type="button" class="tag info-toggle" aria-expanded="false" aria-controls="info" style="--i: 1">Info</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Info overlay: opens over the page with a frosted-glass blur -->
+  <div class="info-panel" id="info" hidden>
+    <div class="info-layout">
+
+      <!-- Left column: about text, contact, credits -->
+      <div class="info-main">
+        <div class="info-block">
+          <p>WEBCAROLF is the design practice of Carolina Ribeiro, working across web design and fashion.</p>
+          <p>Write a second paragraph here about how you work and who you work with.</p>
+          <p>A short closing line goes here.</p>
+        </div>
+
+        <div class="info-block">
+          <h2>CONTACT</h2>
+          <dl>
+            <dt>General Enquiries</dt>
+            <dd><a href="mailto:hello@webcarolf.com">hello@webcarolf.com</a></dd>
+          </dl>
+        </div>
+
+        <div class="info-block">
+          <h2>FOLLOW</h2>
+          <p><a href="https://www.instagram.com/" target="_blank" rel="noopener">@instagram</a></p>
+        </div>
+      </div>
+
+      <!-- Right column: image with caption -->
+      <figure class="info-figure">
+        <!-- Replace this placeholder with: <img src="images/info.jpg" alt="Describe the image"> -->
+        <div class="info-image-placeholder"></div>
+        <figcaption>
+          <p><em>Image title.</em> Place, year, details.</p>
+          <p>A short description of the image goes here.</p>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+</body>
+</html>
