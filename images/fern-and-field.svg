@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <!-- Example logo for a made-up brand -->
+  <rect width="800" height="1000" fill="#13301f"/>
+  <text x="400" y="680" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="560" fill="#e9e2cf">&amp;</text>
+  <text x="70" y="110" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" fill="#e9e2cf" letter-spacing="8">FERN</text>
+  <text x="730" y="910" text-anchor="end" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" fill="#e9e2cf" letter-spacing="8">FIELD</text>
+</svg>

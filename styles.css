@@ -33,12 +33,12 @@ body {
   font-family: 'Untitled Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-/* ---------- Header: logo top-left, nav top-right ---------- */
+/* ---------- Header: logo top-left, nav top-right ----------
+   Sticky (not fixed) so it stays on screen while scrolling but still takes
+   up space: opening the brand box pushes the grid down instead of covering it */
 .header {
-  position: fixed;
+  position: sticky;
   top: 1.25rem;
-  left: 1.25rem;
-  right: 1.25rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -239,7 +239,16 @@ button.tag {
     display: inline-block;
   }
 
+  /* Dropdown floats over the page so it doesn't push the grid down */
+  .menu {
+    position: relative;
+  }
+
   .nav {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding-top: 6px;
     flex-direction: column;
     align-items: flex-end;
   }
@@ -376,5 +385,334 @@ button.tag {
   .info-figure {
     max-width: none;
     width: 100%;
+  }
+}
+
+/* ---------- Works collage: scattered images drifting upwards ----------
+   The layer sits behind the header and fills the screen; main.js moves it */
+.works {
+  /* Height of one full set of projects. Never shorter than 135vw, so on wide
+     screens the images (sized by width) still fit inside it without overlapping */
+  --set-height: max(210vh, 135vw);
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  touch-action: none; /* dragging moves the collage instead of the page */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.works-feed {
+  will-change: transform;
+}
+
+.works-set {
+  position: relative;
+  height: var(--set-height);
+}
+
+.work {
+  position: absolute;
+  display: block;
+}
+
+.work-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  pointer-events: none; /* stops the browser's own image dragging */
+}
+
+/* Pixelated layer drawn over each image by main.js while it sharpens */
+.work-pixels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* Project name: appears under the image on hover, same type as the tagline */
+.work-title {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 0.5rem 0 0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: #5b3a91;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.work:hover .work-title {
+  opacity: 1;
+  transform: none;
+}
+
+/* Categories stay in the markup for the project panel, hidden here */
+.work-tags {
+  display: none;
+}
+
+/* Where each project sits in the set: a loose, uneven collage */
+.work:nth-child(1) { top: 6%;  left: 8%;   width: 26vw; }
+.work:nth-child(2) { top: 4%;  right: 10%; width: 18vw; }
+.work:nth-child(3) { top: 30%; left: 40%;  width: 22vw; }
+.work:nth-child(4) { top: 40%; right: 3%;  width: 14vw; }
+.work:nth-child(5) { top: 52%; left: 3%;   width: 20vw; }
+.work:nth-child(6) { top: 70%; left: 30%;  width: 30vw; }
+.work:nth-child(7) { top: 75%; right: 8%;  width: 17vw; }
+
+/* "View project" pill: hidden until a project is hovered, then main.js
+   moves it with the mouse. Same pill as the Works / Info buttons */
+.view-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.view-cursor.visible {
+  opacity: 1;
+}
+
+/* Phones: one column, evenly spaced. The gap also sits under the last image
+   so the loop into the copied set keeps the same spacing */
+@media (max-width: 600px) {
+  .works-set {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    height: auto;
+    padding: 0 1.25rem 1.25rem;
+  }
+
+  .work:nth-child(n) {
+    position: relative;
+    inset: auto;
+    width: 100%;
+  }
+}
+
+/* ---------- Pixel seal (bottom-right) ---------- */
+.seal {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 5; /* above the collage, below the overlays */
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.2s ease;
+}
+
+.seal:hover {
+  transform: translateY(-3px);
+}
+
+.seal img {
+  display: block;
+  width: 80px; /* 2x the 40px GIF, so every pixel is the same size */
+  height: auto;
+  image-rendering: pixelated; /* keeps the pixels sharp instead of blurry */
+}
+
+/* Seal pattern: fades in behind everything when the seal is clicked */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("images/seal.gif") 0 0 / 80px auto repeat;
+  image-rendering: pixelated;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+body.seal-pattern::before {
+  opacity: 1;
+}
+
+/* ---------- Project panel (opens when a project is clicked) ---------- */
+.project-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 30; /* above the header */
+  overflow-y: auto;
+  background-color: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  color: #5b3a91;
+  -webkit-font-smoothing: antialiased;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.project-panel.open {
+  opacity: 1;
+}
+
+/* Stops the page behind from scrolling while the panel is open */
+body.panel-open {
+  overflow: hidden;
+}
+
+.project-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-height: 100%;
+  padding: 4rem 1.25rem;
+}
+
+/* The lavender card, same family as the brand box */
+.project-card {
+  width: min(640px, 100%);
+  padding: 4px 20px 8px;
+  border-radius: 14px;
+  background-color: #ebe4fb;
+  transform: translateY(12px);
+  transition: transform 0.3s ease;
+}
+
+.project-panel.open .project-card {
+  transform: none;
+}
+
+/* Every section is two columns: label on the left, content on the right */
+.project-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  padding: 16px 0;
+}
+
+.project-row + .project-row,
+.project-body .project-row {
+  border-top: 1px solid rgba(91, 58, 145, 0.15);
+}
+
+/* Labels and names: same type as the buttons */
+.project-row h3,
+.project-title,
+.project-meta,
+.project-row dt {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.project-num {
+  margin-right: 0.6em;
+  color: rgba(91, 58, 145, 0.6);
+}
+
+/* Body text: same type as the tagline under "webcarolf" */
+.project-tags,
+.project-row p,
+.project-row ul,
+.project-row dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+.project-tags,
+.project-row dd {
+  color: rgba(91, 58, 145, 0.6);
+}
+
+.project-tags {
+  margin-top: 0.15em;
+}
+
+.project-row p + p {
+  margin-top: 0.8em;
+}
+
+.project-row ul {
+  padding: 0;
+  list-style: none;
+}
+
+.project-row li + li {
+  margin-top: 0.35em;
+}
+
+.project-row dl {
+  margin: 0;
+}
+
+/* Label on the left, value pushed right */
+.project-row dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.project-row dl > div + div {
+  margin-top: 0.45em;
+}
+
+.project-image {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  margin-top: 0.75rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Round prev / close / next buttons in the button style */
+.project-controls {
+  display: flex;
+  gap: var(--gap-ui);
+}
+
+.project-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 18px;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .project-wrap {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .project-card {
+    padding: 4px 14px 8px;
+  }
+
+  .project-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 }

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <!-- Example logo for a made-up brand -->
+  <rect width="800" height="1000" fill="#cbb8f3"/>
+  <g transform="rotate(-18 400 430)">
+    <!-- back half of the ring, then the planet, then the front half over it -->
+    <path d="M190 430 A210 58 0 0 1 610 430" fill="none" stroke="#3b2266" stroke-width="14"/>
+    <circle cx="400" cy="430" r="110" fill="#3b2266"/>
+    <path d="M190 430 A210 58 0 0 0 610 430" fill="none" stroke="#cbb8f3" stroke-width="30"/>
+    <path d="M190 430 A210 58 0 0 0 610 430" fill="none" stroke="#3b2266" stroke-width="14"/>
+  </g>
+  <text x="400" y="720" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="120" fill="#3b2266" letter-spacing="-5">orbit</text>
+  <text x="400" y="775" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" fill="#3b2266" letter-spacing="10">STUDIO</text>
+</svg>

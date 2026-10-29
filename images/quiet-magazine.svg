@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <!-- Example magazine cover for a made-up title -->
+  <defs>
+    <radialGradient id="sun" cx="0.45" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#f7b8cf"/>
+      <stop offset="1" stop-color="#e46f8f"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="#efe9dd"/>
+  <text x="400" y="225" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="220" fill="#1b1b1b" letter-spacing="-10">QUIET</text>
+  <line x1="60" y1="265" x2="740" y2="265" stroke="#1b1b1b" stroke-width="2"/>
+  <text x="60" y="298" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1b1b1b" letter-spacing="2">ISSUE Nº 09</text>
+  <text x="740" y="298" text-anchor="end" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" fill="#1b1b1b" letter-spacing="2">AUTUMN 2026</text>
+  <circle cx="470" cy="610" r="210" fill="url(#sun)"/>
+  <text x="60" y="820" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="44" fill="#1b1b1b">The slow web</text>
+  <text x="60" y="870" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" fill="#1b1b1b">In praise of white space,</text>
+  <text x="60" y="900" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" fill="#1b1b1b">soft colour and small type</text>
+</svg>
