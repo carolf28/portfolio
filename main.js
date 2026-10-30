@@ -243,7 +243,7 @@
     const ratio = window.devicePixelRatio || 1;
     const width = image.offsetWidth;
     const height = image.offsetHeight;
-    if (!width || !height || !image.naturalWidth) return;
+    if (!width || !height || !(image.naturalWidth || image.videoWidth)) return;
     // Shrink the image to one pixel per block, then blow it back up without smoothing
     small.width = Math.max(1, Math.ceil(width / blockSize));
     small.height = Math.max(1, Math.ceil(height / blockSize));
@@ -301,8 +301,9 @@
       reset(group);
       works.filter((work) => work.dataset.pixelKey === String(key)).forEach((work) => observer.observe(work));
     };
-    if (group.image.complete && group.image.naturalWidth) start();
-    else group.image.addEventListener('load', start, { once: true });
+    const ready = group.image.tagName === 'VIDEO' ? group.image.readyState >= 2 : group.image.complete && group.image.naturalWidth;
+    if (ready) start();
+    else group.image.addEventListener(group.image.tagName === 'VIDEO' ? 'loadeddata' : 'load', start, { once: true });
   });
 })();
 
@@ -325,7 +326,8 @@
   if (!panel || !works.length) return;
 
   const meta = panel.querySelector('.project-meta');
-  const image = panel.querySelector('.project-image');
+  const image = panel.querySelector('img.project-image');
+  const video = panel.querySelector('video.project-image');
   const title = panel.querySelector('.project-title');
   const tags = panel.querySelector('.project-tags');
   const body = panel.querySelector('.project-body');
@@ -338,11 +340,21 @@
     current = (index + works.length) % works.length; // wraps around at either end
     const work = works[current];
     const workImage = work.querySelector('img');
+    const workVideo = work.querySelector('video');
     const details = work.querySelector('.work-details');
 
     meta.textContent = `(No.${String(current + 1).padStart(2, '0')}) ${work.dataset.date || ''}`;
     image.src = workImage ? workImage.src : '';
     image.alt = workImage ? workImage.alt : '';
+    image.hidden = !workImage;
+    // Projects with a video play it in the panel instead of an image
+    video.hidden = !workVideo;
+    if (workVideo) {
+      video.src = workVideo.src;
+      video.play().catch(() => {});
+    } else {
+      video.removeAttribute('src');
+    }
     title.textContent = work.querySelector('.work-title')?.textContent || '';
     tags.textContent = work.querySelector('.work-tags')?.textContent || '';
     body.replaceChildren(details ? details.content.cloneNode(true) : '');
@@ -367,7 +379,10 @@
     panel.addEventListener('transitionend', function hide(event) {
       if (event.target !== panel) return; // ignore the card's own transition
       panel.removeEventListener('transitionend', hide);
-      if (!isOpen()) panel.hidden = true;
+      if (!isOpen()) {
+        panel.hidden = true;
+        video.pause();
+      }
     });
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   };
